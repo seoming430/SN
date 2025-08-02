@@ -1,3 +1,26 @@
 {
-  "extends": "@react-native/typescript-config"
+  "compilerOptions": {
+    "strict": true,                  // 엄격한 타입 체크
+    "noEmit": true,                  // 실제 JS 파일은 내보내지 않음
+    "esModuleInterop": true,         // CommonJS ↔ ESModule 호환
+    "skipLibCheck": true,            // 외부 라이브러리 타입 검사 생략 (빌드 속도 향상)
+    "forceConsistentCasingInFileNames": true, // 대소문자 일관성 체크
+    "moduleResolution": "node",      // moduleResolution을 node로 설정
+    "module": "esnext",               // 최신 ECMAScript 모듈 시스템 사용
+    "target": "es6",                 // 타겟 ES6로 설정
+    "lib": ["es6", "dom"],           // 라이브러리 설정
+    "resolveJsonModule": true,       // JSON 모듈을 가져올 수 있게 설정
+    "jsx": "react-native"            // React Native 환경에서 JSX 사용 설정
+  },
+  "include": [
+    "App.tsx",                       // App.tsx를 포함하도록 설정
+    "index.tsx",                     // index.tsx를 포함하도록 설정
+    "node_modules/react-native/types/**/*.d.ts" // React Native 타입 파일 포함
+  ],
+  "exclude": [
+    "node_modules",                  // node_modules 제외
+    "babel.config.js",               // babel.config.js 제외
+    "metro.config.js",               // metro.config.js 제외
+    "jest.config.js"                 // jest.config.js 제외
+  ]
 }
