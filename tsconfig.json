@@ -13,8 +13,9 @@
     "jsx": "react-native"            // React Native 환경에서 JSX 사용 설정
   },
   "include": [
-    "App.tsx",                       // App.tsx를 포함하도록 설정
-    "index.tsx",                     // index.tsx를 포함하도록 설정
+    "screens/**/*",                  // screens 폴더의 모든 파일
+    "app/**/*",                      // app 폴더의 모든 파일
+    "index.js",                      // index.js 포함
     "node_modules/react-native/types/**/*.d.ts" // React Native 타입 파일 포함
   ],
   "exclude": [

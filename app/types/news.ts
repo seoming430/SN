@@ -28,4 +28,4 @@ export type ServerStatus = 'unknown' | 'online' | 'offline';
 
 export type TabType = '오늘의 추천' | '뉴스' | '프로필';
 
-export type CategoryType = '전체' | '문화' | '경제' | 'IT/과학' | '세계' | '스포츠';
+export type CategoryType = '정치' | '경제' | 'IT/과학' | '문화' | '세계' | '스포츠';
