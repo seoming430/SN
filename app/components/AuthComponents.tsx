@@ -368,7 +368,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
   };
 
   const renderLoginForm = () => (
-    <View style={styles.formContainer}>
+    <View style={styles.loginFormContainer}>
       <Text style={styles.title}>로그인</Text>
       <Text style={styles.subtitle}>SummaNews에 오신 것을 환영합니다</Text>
       
@@ -522,9 +522,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
   const renderQuestion1 = () => (
     <View style={styles.questionSection}>
-      <Text style={styles.questionNumber}>Q1</Text>
-      <Text style={styles.questionTitle}>관심있는 분야를 선택해주세요</Text>
-      <Text style={styles.questionSubtitle}>(2개~4개)</Text>
+      <View style={styles.questionHeader}>
+        <Text style={styles.questionNumber}>Q1</Text>
+        <Text style={styles.questionTitle}>관심있는 분야를 선택해주세요</Text>
+        <Text style={styles.questionSubtitle}>(2개~4개)</Text>
+      </View>
       
       <View style={styles.optionsGrid}>
         {['정치', '연예', '생활·문화', '경제', 'IT/과학', '세계', '스포츠', '환경'].map(interest => (
@@ -551,14 +553,18 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           </TouchableOpacity>
         ))}
       </View>
+      
+      <View style={styles.questionFooter} />
     </View>
   );
 
   const renderQuestion2 = () => (
     <View style={styles.questionSection}>
-      <Text style={styles.questionNumber}>Q2</Text>
-      <Text style={styles.questionTitle}>뉴스를 얼마나 자주 확인하시나요</Text>
-      <Text style={styles.questionSubtitle}>선호하는 뉴스 확인 빈도를 선택해주세요</Text>
+      <View style={styles.questionHeader}>
+        <Text style={styles.questionNumber}>Q2</Text>
+        <Text style={styles.questionTitle}>뉴스를 얼마나 자주 확인하시나요</Text>
+        <Text style={styles.questionSubtitle}>선호하는 뉴스 확인 빈도를 선택해주세요</Text>
+      </View>
       
       <View style={styles.optionsGrid}>
         {['매일', '주 3-4회', '주 1-2회', '가끔'].map(frequency => (
@@ -577,14 +583,18 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           </TouchableOpacity>
         ))}
       </View>
+      
+      <View style={styles.questionFooter} />
     </View>
   );
 
   const renderQuestion3 = () => (
     <View style={styles.questionSection}>
-      <Text style={styles.questionNumber}>Q3</Text>
-      <Text style={styles.questionTitle}>매일 뉴스를 볼 시간을 고르세요</Text>
-      <Text style={styles.questionSubtitle}>원하는 뉴스 알림 시간대를 선택해주세요</Text>
+      <View style={styles.questionHeader}>
+        <Text style={styles.questionNumber}>Q3</Text>
+        <Text style={styles.questionTitle}>매일 뉴스를 볼 시간을 고르세요</Text>
+        <Text style={styles.questionSubtitle}>원하는 뉴스 알림 시간대를 선택해주세요</Text>
+      </View>
       
       <View style={styles.timeOptionsContainer}>
         <TouchableOpacity
@@ -597,7 +607,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           <Text style={[
             styles.timeOptionLabel,
             userPreferences.readingTime === 'morning' && styles.timeOptionLabelActive
-          ]}>출퇴근 루틴 (AM 8:00 / PM 18:30)</Text>
+          ]}>출퇴근 루틴 (8:00/18:30)</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -610,7 +620,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           <Text style={[
             styles.timeOptionLabel,
             userPreferences.readingTime === 'lunch' && styles.timeOptionLabelActive
-          ]}>식후 루틴 (AM 12:30 / PM 19:30)</Text>
+          ]}>식후 루틴 (12:30/19:30)</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -623,7 +633,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           <Text style={[
             styles.timeOptionLabel,
             userPreferences.readingTime === 'evening' && styles.timeOptionLabelActive
-          ]}>밤시간 루틴 (AM 8:00 / PM 22:00)</Text>
+          ]}>밤시간 루틴 (8:00/22:00)</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -633,6 +643,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           <Text style={styles.skipButtonText}>직접 시간대 설정하기</Text>
         </TouchableOpacity>
       </View>
+      
+      <View style={styles.questionFooter} />
     </View>
   );
 
@@ -742,8 +754,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
   );
 
   const renderSignupForm = () => (
-    <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-      <View style={styles.formContainer}>
+    <View style={styles.signupFormContainer}>
         {/* 헤더 섹션 */}
         <View style={styles.headerSection}>
           <TouchableOpacity onPress={handlePrevStep} style={styles.backArrow}>
@@ -779,7 +790,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
   );
 
   return (
@@ -793,13 +803,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
         end={{x: 1, y: 1}}
         style={styles.gradient}
       >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-        >
+        <View style={styles.scrollContent}>
           {authState === 'login' ? renderLoginForm() : renderSignupForm()}
-        </ScrollView>
+        </View>
       </LinearGradient>
     </KeyboardAvoidingView>
   );
@@ -816,12 +822,19 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingVertical: 40,
+    paddingVertical: 60,
   },
-  scrollContainer: {
-    flex: 1,
+  loginFormContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
-  formContainer: {
+  signupFormContainer: {
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 30,
@@ -844,7 +857,8 @@ const styles = StyleSheet.create({
     color: '#374151',
   },
   stepTitle: {
-    fontSize: 24,
+    paddingTop: 10,
+    fontSize: 15,
     fontWeight: 'bold',
     color: '#111827',
   },
@@ -854,7 +868,7 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   title: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#111827',
     marginBottom: 10,
@@ -867,26 +881,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   questionSection: {
-    marginVertical: 20,
+    height: 300,
+    marginVertical: 0,
+  },
+  questionHeader: {
+    paddingTop: 0,
+    paddingBottom: 10,
+    marginTop: -30,
+  },
+  questionFooter: {
+    height: 40,
   },
   questionNumber: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#111827',
-    marginBottom: 10,
+    marginBottom: 8,
     textAlign: 'center',
   },
   questionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     color: '#111827',
-    marginBottom: 5,
+    marginBottom: 4,
     textAlign: 'center',
   },
   questionSubtitle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#6B7280',
-    marginBottom: 20,
+    marginBottom: 0,
     textAlign: 'center',
   },
   inputContainer: {
@@ -936,18 +959,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 20,
+    flex: 1,
+    paddingTop: 0,
+    paddingBottom: 5,
   },
   optionButton: {
     width: '48%',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     backgroundColor: '#F8FAFC',
-    marginBottom: 12,
+    marginBottom: 10,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -964,7 +990,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   optionText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#6B7280',
     fontWeight: '600',
   },
@@ -973,16 +999,19 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   timeOptionsContainer: {
-    marginTop: 20,
+    flex: 1,
+    paddingTop: 0,
+    paddingBottom: 5,
+    justifyContent: 'flex-start',
   },
   timeOption: {
-    paddingVertical: 20,
+    paddingVertical: 14,
     paddingHorizontal: 20,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     backgroundColor: '#F8FAFC',
-    marginBottom: 12,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -999,7 +1028,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   timeOptionLabel: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#6B7280',
     textAlign: 'center',
     fontWeight: '500',
@@ -1066,10 +1095,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   nextButton: {
-    paddingVertical: 18,
-    borderRadius: 16,
+    paddingVertical: 16,
+    borderRadius: 12,
     backgroundColor: '#6B7280',
-    marginTop: 30,
+    marginTop: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

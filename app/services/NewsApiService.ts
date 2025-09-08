@@ -5,8 +5,8 @@ import { NewsItem, SummarizeResponse, NewsResponse } from '../types/news';
 
 // 상수 정의
 const API_CONFIG = {
-  BASE_URL: 'https://76b3fb73850f.ngrok-free.app',
-  TIMEOUT: 10000,
+  BASE_URL: 'https://e801208bab2d.ngrok-free.app',
+  TIMEOUT: 120000,
   HEALTH_CHECK_TIMEOUT: 5000,
   DEFAULT_HEADERS: {
     'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export class NewsApiService {
     // 실제 API 연결을 위한 코드
     try {
       const response = await axios.get(`${this.baseUrl}/api/news/${encodeURIComponent(category)}`, {
-        ...this.getAxiosConfig(60000), // AI 처리 시간 고려하여 60초
+        ...this.getAxiosConfig(120000), // AI 처리 시간 고려하여 120초
       });
       
       if (response.data.news) {
