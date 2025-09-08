@@ -1,5 +1,5 @@
 // components/NewsDetailScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,20 +15,39 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { NewsItem } from '../types/news';
+import { StorageService } from '../services/StorageService';
 
 const { width, height } = Dimensions.get('window');
 
 interface NewsDetailScreenProps {
   newsItem: NewsItem;
   onBack: () => void;
+  onScrapChange?: () => void;
 }
 
 export const NewsDetailScreen: React.FC<NewsDetailScreenProps> = ({
   newsItem,
   onBack,
+  onScrapChange,
 }) => {
-  const [isBookmarked, setIsBookmarked] = useState(newsItem.isBookmarked || false);
+  const [isScrapped, setIsScrapped] = useState(false);
   const [showFullSummary, setShowFullSummary] = useState(false);
+
+  // 컴포넌트 마운트 시 스크랩 상태 로드
+  useEffect(() => {
+    loadBookmarkStatus();
+  }, [newsItem.id]);
+
+  const loadBookmarkStatus = async () => {
+    try {
+      const scraps = await StorageService.getBookmarks();
+      const isCurrentBookmarked = scraps.some((scrap: any) => scrap.id === newsItem.id);
+      setIsScrapped(isCurrentBookmarked);
+      console.log('🔍 [NewsDetailScreen] 스크랩 상태 로드:', isCurrentBookmarked);
+    } catch (error) {
+      console.error('스크랩 상태 로드 오류:', error);
+    }
+  };
 
   const handleShare = async () => {
     try {
@@ -41,12 +60,42 @@ export const NewsDetailScreen: React.FC<NewsDetailScreenProps> = ({
     }
   };
 
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
-    Alert.alert(
-      isBookmarked ? '즐겨찾기 해제' : '즐겨찾기 추가',
-      isBookmarked ? '즐겨찾기에서 제거되었습니다.' : '즐겨찾기에 추가되었습니다.'
-    );
+  const handleScrap = async () => {
+    try {
+      if (isScrapped) {
+        // 스크랩에서 제거
+        const success = await StorageService.removeBookmark(newsItem.id);
+        if (success) {
+          setIsScrapped(false);
+          console.log('🗑️ [NewsDetailScreen] 스크랩 제거됨');
+          Alert.alert('스크랩 해제', '스크랩에서 제거되었습니다.');
+          onScrapChange && onScrapChange(); // 부모 컴포넌트에 변경 알림
+          
+          // 스크랩 수 업데이트
+          await StorageService.updateScrapCount();
+        }
+      } else {
+        // 스크랩에 추가
+        const scrapItem = {
+          ...newsItem,
+          isScrapped: true,
+          scrapedAt: new Date().toISOString(),
+        };
+        const success = await StorageService.addBookmark(scrapItem);
+        if (success) {
+          setIsScrapped(true);
+          console.log('📌 [NewsDetailScreen] 스크랩 추가됨');
+          Alert.alert('스크랩 추가', '스크랩에 추가되었습니다.');
+          onScrapChange && onScrapChange(); // 부모 컴포넌트에 변경 알림
+          
+          // 스크랩 수 업데이트
+          await StorageService.updateScrapCount();
+        }
+      }
+    } catch (error) {
+      console.error('스크랩 처리 오류:', error);
+      Alert.alert('오류', '스크랩 처리에 실패했습니다.');
+    }
   };
 
 
@@ -58,9 +107,9 @@ export const NewsDetailScreen: React.FC<NewsDetailScreenProps> = ({
           <Text style={styles.backButtonText}>‹</Text>
         </TouchableOpacity>
         <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.actionButton} onPress={handleBookmark}>
-            <Text style={[styles.actionIcon, { color: isBookmarked ? '#F59E0B' : '#6B7280' }]}>
-              {isBookmarked ? '★' : '☆'}
+          <TouchableOpacity style={styles.actionButton} onPress={handleScrap}>
+            <Text style={[styles.actionIcon, { color: isScrapped ? '#F59E0B' : '#6B7280' }]}>
+              {isScrapped ? '★' : '☆'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
@@ -190,16 +239,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   actionButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#F3F4F6',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#F3F4F6',
   },
   actionIcon: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   scrollView: {
     flex: 1,

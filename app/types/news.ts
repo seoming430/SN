@@ -24,8 +24,8 @@ export interface NewsResponse {
   news: NewsItem[];
 }
 
-export type ServerStatus = 'unknown' | 'online' | 'offline';
+export type ServerStatus = 'unknown' | 'online' | 'offline' | 'connected' | 'connecting' | 'error';
 
-export type TabType = '오늘의 추천' | '뉴스' | '프로필';
+export type TabType = 'home' | 'trending' | 'search' | 'profile';
 
-export type CategoryType = '정치' | '경제' | 'IT/과학' | '문화' | '세계' | '스포츠';
+export type CategoryType = '정치' | '경제' | 'IT/과학' | '생활·문화' | '세계' | '스포츠';
