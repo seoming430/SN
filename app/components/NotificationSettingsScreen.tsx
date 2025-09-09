@@ -40,7 +40,7 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
     return { hour: 9, minute: 0, period: 'AM' };
   });
 
-  const categories = ['정치', '경제', '사회', '문화', '스포츠', 'IT/과학', '국제', '연예'];
+  const categories = ['정치', '경제', '사회', '생활·문화', '스포츠', 'IT/과학', '국제', '연예'];
 
   useEffect(() => {
     loadSettings();

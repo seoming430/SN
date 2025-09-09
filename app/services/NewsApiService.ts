@@ -5,7 +5,7 @@ import { NewsItem, SummarizeResponse, NewsResponse } from '../types/news';
 
 // 상수 정의
 const API_CONFIG = {
-  BASE_URL: 'https://e801208bab2d.ngrok-free.app',
+  BASE_URL: 'https://5ce5f3e3f3c3.ngrok-free.app',
   TIMEOUT: 120000,
   HEALTH_CHECK_TIMEOUT: 5000,
   DEFAULT_HEADERS: {
@@ -15,7 +15,7 @@ const API_CONFIG = {
     'User-Agent': 'SummaNews-App/1.0',
   },
   SUPPORTED_CATEGORIES: [
-    '정치', '경제', '사회', '생활문화', '연예', '스포츠', '건강', '오늘의추천'
+    '정치', '경제', '사회', '생활·문화', '연예', '스포츠', '건강', '오늘의추천'
   ],
   TRENDING_CATEGORY: '오늘의추천',
   MAX_TRENDING_ITEMS: 5,

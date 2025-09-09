@@ -737,7 +737,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const allCategories = ['정치', '경제', 'IT/과학', '문화', '세계', '스포츠', '사회', '건강', '연예', '환경', '오늘의추천'];
+  const allCategories = ['정치', '경제', 'IT/과학', '생활·문화', '세계', '스포츠', '사회', '건강', '연예', '환경', '오늘의추천'];
 
   
   const handleManageCategories = () => {
